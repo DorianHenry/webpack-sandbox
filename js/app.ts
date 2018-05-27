@@ -1,20 +1,4 @@
-import { log } from './log'
-import { css } from './style.css'
-console.log(css)
+// import { log } from './log'
+import * as styles from '../css/styles.scss'
 
-log('bonjour')
-
-// function getComponent() {
-// return import('jquery').then(_ => {
-//   console.log(_)
-// })
-// }
-
-document.querySelector('#button').addEventListener('click', () => {
-  // getComponent()
-  // var [a, , b] = [1, 2, 3];
-  // console.log(b)
-  // import('jquery').then(($) => {
-  //   $('body').css({ 'background-color': "#000" })
-  // })
-});
+console.log(styles)
