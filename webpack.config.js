@@ -1,13 +1,14 @@
 const path = require('path')
 const webpack = require('webpack');
-const dev =  process.env.NODE_ENV === "dev"
+const dev =  process.env.NODE_ENV === 'dev'
 const WebpackCleanupPlugin= require('webpack-cleanup-plugin')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 
 let cssLoaders = [
-    dev ? 'style-loader' : MiniCssExtractPlugin.loader,
+    MiniCssExtractPlugin.loader,
     {
     loader: 'css-loader',
     options: {
@@ -39,14 +40,16 @@ let baseConfiguration = {
   mode: dev ? 'development' : 'production',
   watch: dev,
   output: {
-    path: path.resolve(__dirname, "./dist"),
-    filename: "[name].js"
+    path: path.resolve(__dirname, './dist'),
+    filename: dev ? '[name].js' : '[name].[chunkhash:8].js',
+    chunkFilename: '[name].js',
+    publicPath:  './dist/'
   },
   resolve:{
-    extensions: ['.ts', ".js", ".jsx", '.scss', '.css',],
+    extensions: ['.ts', '.js', '.jsx', '.scss', '.css',],
     alias:{
-      'core': path.resolve(__dirname, "./js"),
-      'css': path.resolve(__dirname, "./css")
+      'core': path.resolve(__dirname, './js'),
+      'css': path.resolve(__dirname, './css')
     }
   },
   optimization: {
@@ -79,7 +82,13 @@ let baseConfiguration = {
     ]
   },
   plugins: [
-    new WebpackCleanupPlugin()
+    new WebpackCleanupPlugin(),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: dev ? '[name].css' : '[name].[chunkhash:8].css',
+      chunkFilename: dev ? '[id].css' : '[id].[chunkhash:8].css',
+    })
   ]
 }
 
@@ -91,23 +100,15 @@ if(dev){
   )
 }
 else{
-  baseConfiguration.plugins.push(
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: '[name].css',
-      chunkFilename: '[id].css',
-    })
-  )
   baseConfiguration.optimization.minimizer.push(
     new UglifyJsPlugin({
       cache: true,
       parallel: true,
       sourceMap: true // set to true if you want JS source maps
     }),
-    new OptimizeCSSAssetsPlugin({})
+    new OptimizeCSSAssetsPlugin({}),
+    new ManifestPlugin()
   )
-
 }
 
 console.log(baseConfiguration.module.optimization)
