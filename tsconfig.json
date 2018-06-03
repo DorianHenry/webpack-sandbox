@@ -10,10 +10,10 @@
     "baseUrl": "./",
     "paths": {
       "@core/*": [
-        "./js/*"
+        "./assets/js/*"
       ],
       "@css/*": [
-        "./css/*"
+        "./assets/css/*"
       ]
     }
   }

@@ -36,21 +36,21 @@ let scssLoaders = [
 ]
 let baseConfiguration = {
   entry: {
-    app: './js/app.ts'
+    app: path.resolve('./assets/js/app.ts')
   },
   mode: dev ? 'development' : 'production',
   watch: dev,
   output: {
-    path: path.resolve(__dirname, './dist'),
+    path: path.resolve(__dirname, './public/assets/'),
     filename: dev ? '[name].js' : '[name].[chunkhash:8].js',
     chunkFilename: '[name].js',
-    publicPath:  './dist/'
+    publicPath: 'assets/'
   },
   resolve:{
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.scss', '.css',],
     alias:{
-      '@core': path.resolve(__dirname, './js/'),
-      '@css': path.resolve(__dirname, './css/')
+      '@core': path.resolve(__dirname, './assets/js/'),
+      '@css': path.resolve(__dirname, './assets/css/')
     }
   },
   optimization: {
@@ -59,7 +59,7 @@ let baseConfiguration = {
   module:{
     rules:[
       {
-        test:/\.ts?$/,
+        test:/\.(ts|tsx)?$/,
         exclude: /(node_modules|bower_components)/,
         use: [
           {
@@ -84,6 +84,9 @@ let baseConfiguration = {
         use: scssLoaders
       }
     ]
+  },
+  devServer: {
+    contentBase: 'public/',
   },
   plugins: [
     new WebpackCleanupPlugin(),
