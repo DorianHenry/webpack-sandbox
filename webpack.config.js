@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 let cssLoaders = [
     MiniCssExtractPlugin.loader,
@@ -46,10 +47,10 @@ let baseConfiguration = {
     publicPath:  './dist/'
   },
   resolve:{
-    extensions: ['.ts', '.js', '.jsx', '.scss', '.css',],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.scss', '.css',],
     alias:{
-      'core': path.resolve(__dirname, './js'),
-      'css': path.resolve(__dirname, './css')
+      '@core': path.resolve(__dirname, './js/'),
+      '@css': path.resolve(__dirname, './css/')
     }
   },
   optimization: {
@@ -66,6 +67,9 @@ let baseConfiguration = {
             options: {
               transpileOnly: true
             }
+          },
+          {
+            loader: 'eslint-loader'
           }
         ]
       },
@@ -109,8 +113,12 @@ else{
     new OptimizeCSSAssetsPlugin({}),
     new ManifestPlugin()
   )
+  baseConfiguration.plugins.push(
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      openAnalyzer: false
+    })
+  )
 }
-
-console.log(baseConfiguration.module.optimization)
 
 module.exports = baseConfiguration

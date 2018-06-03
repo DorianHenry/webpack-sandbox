@@ -92,6 +92,7 @@
 /******/ 				// start chunk loading
 /******/ 				var head = document.getElementsByTagName('head')[0];
 /******/ 				var script = document.createElement('script');
+/******/ 				var onScriptComplete;
 /******/
 /******/ 				script.charset = 'utf-8';
 /******/ 				script.timeout = 120;
@@ -100,11 +101,7 @@
 /******/ 					script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 				}
 /******/ 				script.src = jsonpScriptSrc(chunkId);
-/******/ 				var timeout = setTimeout(function(){
-/******/ 					onScriptComplete({ type: 'timeout', target: script });
-/******/ 				}, 120000);
-/******/ 				script.onerror = script.onload = onScriptComplete;
-/******/ 				function onScriptComplete(event) {
+/******/ 				onScriptComplete = function (event) {
 /******/ 					// avoid mem leaks in IE.
 /******/ 					script.onerror = script.onload = null;
 /******/ 					clearTimeout(timeout);
@@ -121,6 +118,10 @@
 /******/ 						installedChunks[chunkId] = undefined;
 /******/ 					}
 /******/ 				};
+/******/ 				var timeout = setTimeout(function(){
+/******/ 					onScriptComplete({ type: 'timeout', target: script });
+/******/ 				}, 120000);
+/******/ 				script.onerror = script.onload = onScriptComplete;
 /******/ 				head.appendChild(script);
 /******/ 			}
 /******/ 		}
@@ -136,17 +137,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -200,7 +216,31 @@ eval("// extracted by mini-css-extract-plugin\n\n//# sourceURL=webpack:///./css/
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _css_styles_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/styles.scss */ \"./css/styles.scss\");\n/* harmony import */ var _css_styles_scss__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_css_styles_scss__WEBPACK_IMPORTED_MODULE_0__);\n\r\nconsole.log(_css_styles_scss__WEBPACK_IMPORTED_MODULE_0__);\r\ndocument.querySelector('#button').addEventListener('click', function (event) {\r\n    __webpack_require__.e(/*! import() */ 0).then(function() { var module = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\"); return typeof module === \"object\" && module && module.__esModule ? module : Object.assign({/* fake namespace object */}, typeof module === \"object\" && module, { \"default\": module }); }).then(function ($) {\r\n        console.log('hello');\r\n    }).catch(function (error) {\r\n        console.log(error);\r\n    });\r\n});\r\n\n\n//# sourceURL=webpack:///./js/app.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _css_styles_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @css/styles.scss */ \"./css/styles.scss\");\n/* harmony import */ var _css_styles_scss__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_css_styles_scss__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _core_myClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @core/myClass */ \"./js/myClass.ts\");\n/* harmony import */ var _core_log__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @core/log */ \"./js/log.ts\");\n\r\n\r\n\r\nvar myClass = new _core_myClass__WEBPACK_IMPORTED_MODULE_1__[\"default\"]();\r\ndocument.querySelector('#button').addEventListener('click', function (_) {\r\n    __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.t.bind(null, /*! jquery */ \"./node_modules/jquery/dist/jquery.js\", 7)).then(function ($) {\r\n        console.log($);\r\n        Object(_core_log__WEBPACK_IMPORTED_MODULE_2__[\"default\"])(myClass.init('new js'));\r\n    });\r\n});\r\n\n\n//# sourceURL=webpack:///./js/app.ts?");
+
+/***/ }),
+
+/***/ "./js/log.ts":
+/*!*******************!*\
+  !*** ./js/log.ts ***!
+  \*******************/
+/*! exports provided: default, alertFunction */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return log; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"alertFunction\", function() { return alertFunction; });\nfunction log(log) {\r\n    console.log(log);\r\n}\r\nfunction alertFunction(alert) {\r\n    if (alert === void 0) { alert = 'bounjour'; }\r\n    console.log(alert);\r\n    console.log(alert);\r\n}\r\n\n\n//# sourceURL=webpack:///./js/log.ts?");
+
+/***/ }),
+
+/***/ "./js/myClass.ts":
+/*!***********************!*\
+  !*** ./js/myClass.ts ***!
+  \***********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\nvar HelloWorld = /** @class */ (function () {\r\n    function HelloWorld() {\r\n    }\r\n    HelloWorld.prototype.init = function (wordToReturn) {\r\n        if (wordToReturn === void 0) { wordToReturn = 'hello world'; }\r\n        return wordToReturn;\r\n    };\r\n    return HelloWorld;\r\n}());\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (HelloWorld);\r\n\n\n//# sourceURL=webpack:///./js/myClass.ts?");
 
 /***/ })
 

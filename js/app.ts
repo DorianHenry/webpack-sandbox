@@ -1,12 +1,12 @@
-import { log } from './log'
-import * as styles from '../css/styles.scss'
+import '@css/styles.scss'
+import HelloWorld from '@core/myClass'
+import log from '@core/log'
 
-console.log(styles)
+let myClass = new HelloWorld()
 
-document.querySelector('#button').addEventListener('click', event => {
+document.querySelector('#button').addEventListener('click', _ => {
   import('jquery').then($ => {
-    console.log('hello')
-  }).catch(error => {
-    console.log(error)
+    console.log($)
+    log(myClass.init('new js'))
   })
 })
